@@ -1,0 +1,19 @@
+{
+  "name": "arisu-music-bot",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/express": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.16.3",
+    "express": "^4.21.2"
+  },
+  "scripts": {
+    "start": "bun index.ts"
+  }
+}
