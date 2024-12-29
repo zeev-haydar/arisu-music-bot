@@ -1,3 +1,15 @@
-const prefix = "a!";
+import { createAudioPlayer, NoSubscriberBehavior } from "@discordjs/voice";
 
-export {prefix};
+const PREFIX = "a!";
+
+const createPlayer = () => {
+    const audioPlayer = createAudioPlayer({
+        behaviors: {
+            noSubscriber: NoSubscriberBehavior.Pause,
+        },
+    });
+    return audioPlayer;
+    
+}
+
+export { PREFIX, createPlayer };

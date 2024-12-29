@@ -4,17 +4,17 @@ import type { Command } from "../types/Command";
 const ping: Command = {query:
     {
         keyword: "ping",
-        callback: async (client:Client, message: Message) => {
+        callback: (client:Client, message: Message, parameter) => {
             if (message.author.bot) return;
 
             if (message.channel.type === ChannelType.GuildText) {
-                await (message.channel as TextChannel).send("Pong!");
+                (message.channel as TextChannel).send("Pong!");
             }
         }
     },
     slashCommand: {
-        builder: new SlashCommandBuilder().setName("ping").setDescription("Replies with Pong!"),
-        execute: async (interaction) => {
+        data: new SlashCommandBuilder().setName("ping").setDescription("Replies with Pong!"),
+        execute: async (client, interaction) => {
             await interaction.reply("Pong!");
         }
     }

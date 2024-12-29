@@ -1,13 +1,13 @@
-import { CommandInteraction, SlashCommandBuilder, type InteractionContextType } from "discord.js"
+import { Client, CommandInteraction, Message, SlashCommandBuilder, type SlashCommandOptionsOnlyBuilder } from "discord.js"
 
 export type Command = {
     query: {
         keyword: string,
-        callback: (client: any, message: any) => void
+        callback: (client: Client, message: Message, parameters: String[] | null, ...opt_args: any[]) => void
     }
     slashCommand: {
-        builder: SlashCommandBuilder,
-        execute: (interaction: CommandInteraction) => Promise<void>;
+        data: SlashCommandBuilder | SlashCommandOptionsOnlyBuilder,
+        execute: (client: Client, interaction: CommandInteraction) => Promise<void>;
 
     }
 }

@@ -4,7 +4,8 @@ import fs from "fs";
 import path from "path";
 import type { Command } from "./types/Command";
 import { specialSplit } from "./utils";
-import { prefix } from "./configs/constants";
+import { PREFIX } from "./configs/constants";
+import type { AudioPlayer } from "@discordjs/voice";
 
 
 
@@ -31,7 +32,7 @@ for (const file of commandFiles) {
     // console.log(`Loaded command file: ${filePath}`, command);
 
     if (command.default) {
-        commands.push(command.default.slashCommand.builder.toJSON());
+        commands.push(command.default.slashCommand.data.toJSON());
         commandMap.set(command.default.query.keyword, command.default);
     } else {
         console.error(`Invalid command structure in file: ${filePath}`);
@@ -69,32 +70,28 @@ client.on("interactionCreate", async (interaction) => {
     const command = commandMap.get(interaction.commandName);
 
     if (command) {
-        await command.slashCommand.execute(interaction);
+        await command.slashCommand.execute(client, interaction);
     }
 });
 
 client.on("messageCreate", async (message) => {
     if (message.author.bot) return;
 
-    if (!message.content.startsWith(prefix)) return;
-    console.log("message received: ", message.content);
+    if (!message.content.startsWith(PREFIX)) return;
+    
+    // split the message into command and arguments
     const args = specialSplit(message.content);
-    console.log("args: ", args);
     let command = args.shift()?.toLowerCase();
 
+    const parameter = args.slice(0) || null;
     if (command) {
-        // check if the command follow the format of prefix + query
-       
-        
-        // omit the prefix
-        command = command.slice(prefix.length);
-        console.log("command: ", command);
+        // omit the PREFIX
+        command = command.slice(PREFIX.length);
         
         const cmd = commandMap.get(command);
-        console.log("cmd: ", cmd);
 
         if (cmd) {
-            cmd.query.callback(client, message);
+            cmd.query.callback(client, message, parameter);
         }
     }
 });
